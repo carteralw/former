@@ -1,5 +1,7 @@
 # former
 main.tf
+
+```hcl
 variable "environment" {
   type    = string
   default = "dev"   # used if nothing is set in tfvars
@@ -18,21 +20,21 @@ resource "local_file" "example" {
   filename = "${path.module}/output.txt"
   content  = "Hello from ${local.prefix}"
 }
+```
 
+```hcl
 tf.vars
 environment = "prod"
 app_name    = "greetingapp"
 ```
 
-That's it. When you run `terraform apply`, Terraform automatically reads `terraform.tfvars` and the `output.txt` it creates will contain:
-```
-Hello from greetingapp-prod
 
 
 
 
 
 main.tf
+```hcl
 locals {
   # toset() converts the list to a set, which is what for_each requires
   files = toset(["1", "2", "3", "4", "5"])
@@ -46,13 +48,6 @@ resource "local_file" "hello" {
 }
 ```
 
-That creates:
-```
-output-1.txt  →  "Hello 1"
-output-2.txt  →  "Hello 2"
-output-3.txt  →  "Hello 3"
-output-4.txt  →  "Hello 4"
-output-5.txt  →  "Hello 5"
 
 
 
@@ -60,7 +55,7 @@ output-5.txt  →  "Hello 5"
 
 
 main.tf
-
+```hcl
 locals {
   files = {
     "1" = "Hello One"
@@ -75,3 +70,4 @@ resource "local_file" "hello" {
   filename = "${path.module}/output-${each.key}.txt"
   content  = each.value   # now each file gets its own content
 }
+```
